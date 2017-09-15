@@ -1,4 +1,4 @@
-FROM java:8 
+FROM frolvlad/alpine-oraclejdk8
 
 # Install maven
 RUN apt-get update
