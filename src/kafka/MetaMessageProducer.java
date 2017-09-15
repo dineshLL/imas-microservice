@@ -24,45 +24,38 @@ public class MetaMessageProducer implements MessageProducer {
 	@Override
 	public void sendMessage(JsonObject imas) {
 		System.out.println("meta message sent started " + new Date().toString());
-		/*Thread thread = new Thread(new Task<Void>() {
 
-			@Override
-			protected Void call() throws Exception {*/
-				try {
-					int hop = imas.getInt("hop");
-					hop++;
-					String cmd = "ack";
-					String uuid = imas.getString("uuid");
-					String role = "ack";
+		try {
+			int hop = imas.getInt("hop");
+			hop++;
+			String cmd = "ack";
+			String uuid = imas.getString("uuid");
+			String role = "ack";
 
-					JsonObject json = Json.createObjectBuilder()
-							.add("imas", Json.createObjectBuilder()
-									.add("hop", hop)
-									.add("cmd", cmd)
-									.add("uuid", uuid)
-									.add("role", role))
-							.build();
+			JsonObject json = Json.createObjectBuilder()
+					.add("imas", Json.createObjectBuilder()
+							.add("hop", hop)
+							.add("cmd", cmd)
+							.add("uuid", uuid)
+							.add("role", role))
+							.add("containerId", ContainerIdResolver.INSTANCE.getContainerId())
+					.build();
 
 
-					producer.send(new ProducerRecord<String, String>(
-							topicName, 
-							Integer.toString(1),
-							json.toString()
-							));
-					System.out.println("sending message to " + topicName + " json message " + json.toString());
-				}catch (Exception e) {
-					e.printStackTrace();
-					// TODO: handle exception
-				}
+			producer.send(new ProducerRecord<String, String>(
+					topicName, 
+					Integer.toString(1),
+					json.toString()
+					));
+			
+			System.out.println("sending message to " + topicName + " json message " + json.toString());
+		}catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		}
 
-				System.out.println("meta data sent to the server");
+		System.out.println("meta data sent to the server");
 
-				/*return null;
-			}
-		});
-
-		thread.setDaemon(true);
-		thread.start();*/
 	}
 
 	public static MessageProducer getInstance() {

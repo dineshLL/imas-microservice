@@ -1,4 +1,4 @@
-FROM openjdk:8
+FROM cogniteev/oracle-java
 
 # Install maven
 RUN apt-get update
@@ -16,4 +16,4 @@ ADD src /code/src
 RUN ["mvn", "install"]
 
 EXPOSE 4567
-CMD ["/usr/lib/jvm/java-8-openjdk-amd64/bin/java", "-jar", "Consumer-0.0.1-SNAPSHOT-jar-with-dependencies.jar", "-test1"]
+CMD ["java", "-jar", "target/Consumer-0.0.1-SNAPSHOT-jar-with-dependencies.jar", "-test1"]
