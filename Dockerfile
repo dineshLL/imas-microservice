@@ -1,4 +1,4 @@
-FROM 8-jdk
+FROM openjdk:8
 
 # Install maven
 RUN apt-get update
