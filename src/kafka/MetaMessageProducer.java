@@ -41,14 +41,13 @@ public class MetaMessageProducer implements MessageProducer {
 							.add("containerId", ContainerIdResolver.INSTANCE.getContainerId())
 					.build();
 
-
 			producer.send(new ProducerRecord<String, String>(
 					topicName, 
 					Integer.toString(1),
 					json.toString()
 					));
 			
-			System.out.println("sending message to " + topicName + " json message " + json.toString());
+			logger.info("sending message to " + topicName + " json message " + json.toString());
 		}catch (Exception e) {
 			e.printStackTrace();
 			// TODO: handle exception
