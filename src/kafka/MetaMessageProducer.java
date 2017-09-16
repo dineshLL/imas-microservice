@@ -23,7 +23,7 @@ public class MetaMessageProducer implements MessageProducer {
 
 	@Override
 	public void sendMessage(JsonObject imas) {
-		System.out.println("meta message sent started " + new Date().toString());
+		logger.info("meta message sent started " + new Date().toString());
 
 		try {
 			int hop = imas.getInt("hop");
@@ -65,7 +65,7 @@ public class MetaMessageProducer implements MessageProducer {
 
 	private MetaMessageProducer() {
 		Properties props = new Properties();
-		props.put("bootstrap.servers", "192.168.79.100:9092");  
+		props.put("bootstrap.servers", "192.168.100.199:9092");  
 		props.put("acks", "all");
 		props.put("retries", 0);
 		props.put("batch.size", 16384);

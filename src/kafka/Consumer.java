@@ -82,7 +82,7 @@ public class Consumer {
 								JsonObject payload = inbound.getJsonObject("payload");
 								
 								MessageProducer producer = MessageProducerFactory.get(ProducerType.META);
-								//producer.sendMessage(imas);
+								producer.sendMessage(imas);
 								
 								logger.info("message processing completed");
 								
