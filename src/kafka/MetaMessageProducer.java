@@ -37,8 +37,8 @@ public class MetaMessageProducer implements MessageProducer {
 							.add("hop", hop)
 							.add("cmd", cmd)
 							.add("uuid", uuid)
-							.add("role", role))
-							.add("containerId", ContainerIdResolver.INSTANCE.getContainerId())
+							.add("role", role)
+							.add("containerId", ContainerIdResolver.INSTANCE.getContainerId()))
 					.build();
 
 			producer.send(new ProducerRecord<String, String>(
@@ -53,7 +53,7 @@ public class MetaMessageProducer implements MessageProducer {
 			// TODO: handle exception
 		}
 
-		System.out.println("meta data sent to the server");
+		logger.info("meta data sent to the server");
 
 	}
 
