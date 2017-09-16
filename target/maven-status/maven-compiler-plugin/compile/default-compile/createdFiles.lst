@@ -1,8 +1,8 @@
 kafka\BaseMessageProducer.class
 kafka\ProducerType.class
 kafka\Consumer.class
-kafka\MetaMessageProducer$1.class
 kafka\Consumer$1.class
+kafka\ContainerIdResolver.class
 kafka\MessageProducerFactory.class
 kafka\MetaMessageProducer.class
 kafka\BaseMessageProducer$1.class
