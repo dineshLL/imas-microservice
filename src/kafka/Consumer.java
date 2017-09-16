@@ -12,8 +12,13 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.errors.WakeupException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Consumer {
+	
+	private static Logger logger = LoggerFactory.getLogger(Consumer.class);
+	
 	public static void main(String[] args) {
 		//Kafka consumer configuration settings
 		String topicName = "test-1";
@@ -77,9 +82,9 @@ public class Consumer {
 								JsonObject payload = inbound.getJsonObject("payload");
 								
 								MessageProducer producer = MessageProducerFactory.get(ProducerType.META);
-								producer.sendMessage(imas);
+								//producer.sendMessage(imas);
 								
-								System.out.println("message processing completed");
+								logger.info("message processing completed");
 								
 							}catch (Exception e) {
 								e.printStackTrace();
