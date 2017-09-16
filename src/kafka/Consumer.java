@@ -19,7 +19,7 @@ public class Consumer {
 		String topicName = "test-1";
 		Properties props = new Properties();
 
-		props.put("bootstrap.servers", "192.168.79.100:9092");
+		props.put("bootstrap.servers", "192.168.100.199:9092");
 		props.put("group.id", "test");
 		props.put("enable.auto.commit", "true");
 		props.put("auto.commit.interval.ms", "1000");
