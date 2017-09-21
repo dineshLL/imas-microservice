@@ -2,6 +2,7 @@ package kafka;
 
 import java.util.Properties;
 
+import javax.json.Json;
 import javax.json.JsonObject;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -28,7 +29,7 @@ public class BaseMessageProducer implements MessageProducer {
 	
 	private BaseMessageProducer() {
 		Properties props = new Properties();
-		props.put("bootstrap.servers", "192.168.79.100:9092");  
+		props.put("bootstrap.servers", "192.168.100.199:9092");  
 		props.put("acks", "all");
 		props.put("retries", 0);
 		props.put("batch.size", 16384);
@@ -48,23 +49,32 @@ public class BaseMessageProducer implements MessageProducer {
 
 	@Override
 	public void sendMessage(JsonObject message) {
-		Thread thread = new Thread(new Task<Void>() {
+		logger.info("starting to send the message to the base-q");
+		JsonObject imas = message.getJsonObject("imas");
+		
+		int hop = imas.getInt("hop");
+		hop++;
+		String cmd = "test-2";
+		String uuid = imas.getString("uuid");
+		String role = "ack";
 
-			@Override
-			protected Void call() throws Exception {
-				producer.send(new ProducerRecord<String, String>(
-						topicName, 
-						Integer.toString(1),
-						message.toString()
-						));
-				logger.info("message sent to the base q");
-			
-				return null;
-			}
-		});
+		imas = Json.createObjectBuilder()
+				.add("imas", Json.createObjectBuilder()
+						.add("hop", hop)
+						.add("cmd", cmd)
+						.add("uuid", uuid)
+						.add("role", role)
+						.add("containerId", ContainerIdResolver.INSTANCE.getContainerId()))
+				.build();
 
-		thread.setDaemon(true);
-		thread.start();
+		producer.send(new ProducerRecord<String, String>(
+				topicName, 
+				Integer.toString(1),
+				message.toString()
+				));
+		
+		logger.info("message sent to the base-q");
 	}
+	
 
 }
