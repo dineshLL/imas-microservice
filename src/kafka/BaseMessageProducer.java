@@ -11,22 +11,20 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javafx.concurrent.Task;
-
 public class BaseMessageProducer implements MessageProducer {
-	
+
 	private static BaseMessageProducer instance = null;
-	
+
 	private Logger logger = LoggerFactory.getLogger(BaseMessageProducer.class);
 	private Producer<String, String> producer = null;
 	private final String topicName = "base-q";
 
 	public static BaseMessageProducer getInstance() {
 		if(instance == null) instance = new BaseMessageProducer();
-		
+
 		return instance;
 	}
-	
+
 	private BaseMessageProducer() {
 		Properties props = new Properties();
 		props.put("bootstrap.servers", "192.168.100.199:9092");  
@@ -51,30 +49,33 @@ public class BaseMessageProducer implements MessageProducer {
 	public void sendMessage(JsonObject message) {
 		logger.info("starting to send the message to the base-q");
 		JsonObject imas = message.getJsonObject("imas");
-		
+
 		int hop = imas.getInt("hop");
 		hop++;
 		String cmd = "test-2";
 		String uuid = imas.getString("uuid");
 		String role = "ack";
 
-		imas = Json.createObjectBuilder()
-				.add("imas", Json.createObjectBuilder()
+		JsonObject newMetaInfo = Json.createObjectBuilder()
 						.add("hop", hop)
 						.add("cmd", cmd)
 						.add("uuid", uuid)
 						.add("role", role)
-						.add("containerId", ContainerIdResolver.INSTANCE.getContainerId()))
+						.add("containerId", ContainerIdResolver.INSTANCE.getContainerId())
 				.build();
+		JsonObject toBeSent = Json.createObjectBuilder()
+					.add("payload", message.get("payload"))
+					.add("imas", newMetaInfo)
+					.build();
 
 		producer.send(new ProducerRecord<String, String>(
 				topicName, 
 				Integer.toString(1),
-				message.toString()
+				toBeSent.toString()
 				));
-		
+
 		logger.info("message sent to the base-q");
 	}
-	
+
 
 }
