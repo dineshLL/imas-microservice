@@ -25,7 +25,7 @@ public class Consumer {
 		Properties props = new Properties();
 
 		props.put("bootstrap.servers", "192.168.100.199:9092");
-		props.put("group.id", "test");
+		props.put("group.id", "test-1-grp");
 		props.put("enable.auto.commit", "true");
 		props.put("auto.commit.interval.ms", "1000");
 		props.put("session.timeout.ms", "30000");
@@ -42,23 +42,6 @@ public class Consumer {
 
 		//print the topic name
 		System.out.println("Subscribed to topic " + topicName);
-		//int i = 0;
-
-		/*try {
-			while (true) {
-				ConsumerRecords<String, String> records = consumer.poll(100);
-				for (ConsumerRecord<String, String> record : records)
-
-					// print the offset,key and value for the consumer records.
-					System.out.printf("offset = %d, key = %s, value = %s\n", 
-							record.offset(), record.key(), record.value());
-			}
-		} catch (WakeupException e) {
-			// ignore for shutdown
-		} finally {
-			System.out.println("consumer closed");
-			consumer.close();
-		}*/
 
 		Thread loop = new Thread(new Runnable() {
 
@@ -79,6 +62,7 @@ public class Consumer {
 							try (JsonReader reader = Json.createReader(new StringReader(value))) {
 								JsonObject inbound = reader.readObject();
 								JsonObject imas = inbound.getJsonObject("imas");
+								logger.info("debug info " + imas);
 								JsonObject payload = inbound.getJsonObject("payload");
 								
 								MessageProducer metaProducer = MessageProducerFactory.get(ProducerType.META);
